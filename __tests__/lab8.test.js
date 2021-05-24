@@ -96,7 +96,7 @@ describe('Basic user flow for SPA ', () => {
   });
 
   // define and implement test11: Clicking the back button once should bring the user back to the home page
-
+  it("Test11: Clicking the back button once should bring the user back to the home page")
 
   // define and implement test12: When the user if on the homepage, the header title should be “Journal Entries”
 
