@@ -29,15 +29,25 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test3: Clicking first <journal-entry>, new URL should contain /#entry1', async () => {
     // implement test3: Clicking on the first journal entry should update the URL to contain “/#entry1”
-
+    await page.click("journal-entry"); 
+    expect(page.url()).toMatch("/#entry1"); 
   });
 
   it('Test4: On first Entry page - checking page header title', async () => {
     // implement test4: Clicking on the first journal entry should update the header text to “Entry 1” 
-
+    let head = await page.$eval('h1', (header) => header.innerHTML); 
+    expect(head).toBe("Entry 1"); 
   });
 
   it('Test5: On first Entry page - checking <entry-page> contents', async () => {
+    let entry = await page.$$("journal-entry")
+    let f_entry = await entry[0].getProperty('entry'); 
+    let data = await f_entry.jsonValue(); 
+    expect(data.title).toBe('You like jazz?'); 
+    expect(data.date).toBe('4/25/2021'); 
+    expect(data.content).toBe("According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible."); 
+    expect(data.image.src).toBe('https://i1.wp.com/www.thepopcornmuncher.com/wp-content/uploads/2016/11/bee-movie.jpg?resize=800%2C455'); 
+    expect(data.image.alt).toBe('bee with sunglasses'); 
     /*
      implement test5: Clicking on the first journal entry should contain the following contents: 
         { 
@@ -56,26 +66,33 @@ describe('Basic user flow for SPA ', () => {
   it('Test6: On first Entry page - checking <body> element classes', async () => {
     // implement test6: Clicking on the first journal entry should update the class attribute of <body> to ‘single-entry’
 
+    let body_elem = await page.$eval("body", (e) => e.classList); 
+    expect(body_elem[0]).toBe("single-entry"); 
+
   });
 
   it('Test7: Clicking the settings icon, new URL should contain #settings', async () => {
     // implement test7: Clicking on the settings icon should update the URL to contain “/#settings”
-
+    await page.click("header > img"); 
+    expect(page.url()).toMatch("http://127.0.0.1:5500/#settings"); 
   });
 
   it('Test8: On Settings page - checking page header title', async () => {
     // implement test8: Clicking on the settings icon should update the header to be “Settings”
-
+    let head = await page.$eval('h1', (header) => header.innerHTML); 
+    expect(head).toBe("Settings"); 
   });
 
   it('Test9: On Settings page - checking <body> element classes', async () => {
     // implement test9: Clicking on the settings icon should update the class attribute of <body> to ‘settings’
-
+    let body_elem = await page.$eval("body", (e) => e.classList); 
+    expect(body_elem[0]).toBe("settings"); 
   });
 
   it('Test10: Clicking the back button, new URL should be /#entry1', async() => {
     // implement test10: Clicking on the back button should update the URL to contain ‘/#entry1’
-
+    await page.goBack(); 
+    expect(page.url()).toMatch("/#entry1"); 
   });
 
   // define and implement test11: Clicking the back button once should bring the user back to the home page
